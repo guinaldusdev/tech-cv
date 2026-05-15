@@ -7,9 +7,23 @@ import { UsersModule } from './users/users.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ProfileModule } from './profile/profile.module';
 import { ProjectsModule } from './projects/projects.module';
+import { ConfigModule } from '@nestjs/config';
+import { envValidationSchema } from './config/env.validation';
 
 @Module({
-  imports: [AuthModule, UsersModule, PrismaModule, ProfileModule, ProjectsModule],
+  imports: [
+    ConfigModule.forRoot(
+      {
+        isGlobal: true,
+        validationSchema: envValidationSchema,
+      }
+    ),
+    AuthModule, 
+    UsersModule, 
+    PrismaModule, 
+    ProfileModule,
+    ProjectsModule
+  ],
   controllers: [AppController, HealthController],
   providers: [AppService],
 })
